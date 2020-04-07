@@ -71,7 +71,7 @@ cron.schedule("27 1 * * *", function () {
 
         filename = date.getFullYear() + date.getMonth() + date.getDay() + date.getTime() + '.csv';
         console.log(investigationlist.length);
-        fs.writeFile('ups/' + filename, csv, function (err) {
+        fs.writeFile('csvs/' + filename, csv, function (err) {
             if (err) {
                 console.log(err);
             } else {
@@ -156,7 +156,7 @@ app.get("/", function (req, res) {
 
         filename = date.getFullYear() + date.getMonth() + date.getDay() + date.getTime() + '.csv';
         console.log(investigationlist.length);
-        fs.writeFile('ups/' + filename, csv, function (err) {
+        fs.writeFile('csvs/' + filename, csv, function (err) {
             if (err) {
                 console.log(err);
             } else {
