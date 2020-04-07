@@ -18,11 +18,11 @@ route.use(bodyParser.urlencoded({extended: true})); // for parsing application/x
 var date =new Date();
 app = express();
 //const fields = ['id', 'date', 'time','phoneNumber', 'firstName','surName','dob','dateOfFirstSymptom','initialSymptom','spo2','temperature','numberofbreaths','pulserate','bloodPressureSystolic','bloodPressureDiastolic','persistentCough','isItDry','colorOfSpeutum','areYouOnOxygen','isYourUrineDark','foodInTheHouse','haveAcarer','status'];
-const fields = ['Id', 'Date', 'Time', 'Phone Number', 'First Name', 'SurName', 'Dob', 'Date Of First Symptom', 'Initial Symptom', 'Spo2', 'Temperature', 'Number Of Breaths 60s', 'Pulserate', 'Blood Pressure Systolic', 'Blood Pressure Diastolic', 'Persistent Cough', 'Is It Dry', 'Color Of Speutum', 'Are You On Oxygen', 'Is Your Urine Dark', 'Food In TheHouse', 'Have A carer', 'Status'];
+const fields = ['Id', 'Date', 'Time', 'Phone Number', 'First Name', 'SurName', 'Dob', 'Date Of First Symptom', 'Initial Symptom', 'Spo2', 'Temperature', 'Number Of Breaths 60s', 'Pulserate', 'Blood Pressure Systolic', 'Blood Pressure Diastolic', 'Persistent Cough', 'Is It Dry', 'Color Of Speutum', 'Are You On Oxygen', 'Is Your Urine Dark', 'Food In The House', 'Have A carer', 'Status'];
 const opts = {fields};
 var investigationlist = [];
 var investigationItem = {};
-cron.schedule("27 1 * * *", function () {
+cron.schedule("1-5 * * * *", function () {
     return investigations.findAll({
         raw: true,
         as: "investigations",
