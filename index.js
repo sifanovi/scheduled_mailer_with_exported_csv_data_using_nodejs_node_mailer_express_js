@@ -22,7 +22,7 @@ const fields = ['Id', 'Date', 'Time', 'Phone Number', 'First Name', 'SurName', '
 const opts = {fields};
 var investigationlist = [];
 var investigationItem = {};
-cron.schedule("*/1 * * * *", function () {
+cron.schedule(" 02 15 * *", function () {
     investigationlist = [];
     return investigations.findAll({
         raw: true,
