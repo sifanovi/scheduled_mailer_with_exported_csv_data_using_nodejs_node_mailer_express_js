@@ -22,91 +22,7 @@ const fields = ['Id', 'Date', 'Time', 'Phone Number', 'First Name', 'SurName', '
 const opts = {fields};
 var investigationlist = [];
 var investigationItem = {};
-// cron.schedule("27 1 * * *", function () {
-//
-//     var investigationItem = {};
-//     var investigationlist = [];
-//     var date = new Date();
-//     return investigations.findAll({
-//         raw: true,
-//         as: "investigations",
-//         include: [{
-//             as: "patient",
-//             model: patients
-//         }]
-//     }).then(function (result) {
-//         result.forEach(function (investigation) {
-//             investigationItem['Id'] = investigation.patient_id;
-//             investigationItem['Date'] = moment(investigation.createdAt).format('DD-MM-YYYY');
-//             investigationItem['Time'] = moment(investigation.createdAt).format('hh:mm');
-//             investigationItem['Phone Number'] = (investigation['patient.phone']);
-//             investigationItem['First Name'] = (investigation['patient.first_name']);
-//             investigationItem['SurName'] = (investigation['patient.sur_name']);
-//             investigationItem['Dob'] = (investigation['patient.date_of_birth']);
-//             investigationItem['Date Of First Symptom'] = (investigation['patient.date_of_first_symptom']);
-//             investigation.symptoms ?   investigationItem['Initial Symptom'] = investigation.symptoms : investigationItem['Initial Symptom'] = investigation['patient.symptoms'];
-//             investigationItem['Initial Symptom'] = investigation.symptoms;
-//             investigationItem['Spo2'] = investigation.oxygen;
-//             investigationItem['Temperature'] = investigation.temperature;
-//             investigationItem['Number Of Breaths 60s'] = investigation.breaths;
-//             investigationItem['Pulserate'] = investigation.pulse_rate;
-//             investigationItem['Blood Pressure Systolic'] = investigation.blood_pressure_systolic;
-//             investigationItem['Blood PressureDiastolic'] = investigation.blood_pressure_diastolic;
-//             investigationItem['Persistent Cough'] = investigation.persistent_cough
-//             investigationItem['Is It Dry'] = investigation.discoloured_phlegm;
-//             investigationItem['Color Of Speutum'] = investigation.discoloured_phlegm;
-//             investigationItem['Are You On Oxygen'] = investigation.oxygen;
-//             investigationItem['Is Your Urine Dark'] = investigation.urine;
-//             investigationItem['Food In The House'] = investigation.food_status;
-//             investigationItem['Have A carer'] = investigation.carer_status;
-//             investigationItem['Status'] = investigation.patient_status;
-//             investigationlist.push(investigationItem);
-//
-//         });
-//         parser = new Parser(opts);
-//         const csv = parser.parse(investigationlist);
-//         filename = date.getFullYear() + date.getMonth() + date.getDay() + date.getTime() + '.csv';
-//         fs.writeFile('ups/' + filename, csv, function (err) {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 var transporter = nodeMailer.createTransport({
-//                     host: 'smtp.gmail.com',
-//                     port: 587,
-//                     secure: false,
-//                     requireTLS: true,
-//                     auth: {
-//                         user: 'sifancovid@gmail.com',
-//                         pass: 'covid19_sifan'
-//                     }
-//                 });
-//                 const mailOptions = {
-//                     from: 'sifancovid@gmail.com', // sender address
-//                     to: 'sifanduronto@gmail.com', // list of receivers
-//                     subject: 'Testing', // Subject line
-//                     html: '<p>Your Report is  here</p>',// plain text body,
-//                     attachments: [{
-//                         filename: filename,
-//                         path: 'ups/' + filename
-//                     }],
-//                 }
-//                 transporter.sendMail(mailOptions, function (err, info) {
-//                     if (err)
-//                         console.log(err)
-//                     else
-//                         console.log(info);
-//                 });
-//                 //  res.download(path.join(__dirname, "ups/" + filename));
-//             }
-//         });
-//
-//     });
-//
-// });
-
-app.get("/", function (req, res) {
-
-    var date = new Date();
+cron.schedule("27 1 * * *", function () {
     return investigations.findAll({
         raw: true,
         as: "investigations",
@@ -127,7 +43,7 @@ app.get("/", function (req, res) {
             investigationItem['SurName'] = investigation['patient.sur_name'];
             investigationItem['Dob'] = investigation['patient.date_of_birth'];
             investigationItem['Date Of First Symptom'] = investigation['patient.start_date_of_symptoms'];
-           investigationItem['Initial Symptom'] =  investigation.symptoms ?   investigationItem['Initial Symptom'] = investigation.symptoms : investigationItem['Initial Symptom'] = investigation['patient.symptoms'];
+            investigationItem['Initial Symptom'] = investigation.symptoms ? investigationItem['Initial Symptom'] = investigation.symptoms : investigationItem['Initial Symptom'] = investigation['patient.symptoms'];
             investigationItem['Spo2'] = investigation.pulse_oximeter;
             investigationItem['Temperature'] = investigation.temperature;
             investigationItem['Number Of Breaths 60s'] = investigation.breaths;
@@ -135,7 +51,7 @@ app.get("/", function (req, res) {
             investigationItem['Blood Pressure Systolic'] = investigation.blood_pressure_systolic;
             investigationItem['Blood Pressure Diastolic'] = investigation.blood_pressure_diastolic;
             investigationItem['Persistent Cough'] = investigation.persistent_cough;
-            investigationItem['Is It Dry'] = investigation.discoloured_phlegm  ? investigation.discoloured_phlegm : 'n/a';
+            investigationItem['Is It Dry'] = investigation.discoloured_phlegm ? investigation.discoloured_phlegm : 'n/a';
             investigationItem['Color Of Speutum'] = investigation.discoloured_phlegm;
             investigationItem['Are You On Oxygen'] = investigation.oxygen;
             investigationItem['Is Your Urine Dark'] = investigation.urine;
@@ -176,7 +92,7 @@ app.get("/", function (req, res) {
                     html: '<p>Your Report is  here</p>',// plain text body,
                     attachments: [{
                         filename: filename,
-                        path: 'ups/' + filename
+                        path: 'csvs/' + filename
                     }],
                 }
                 transporter.sendMail(mailOptions, function (err, info) {
@@ -185,7 +101,66 @@ app.get("/", function (req, res) {
                     else
                         console.log(info);
                 });
-                res.download(path.join(__dirname, "ups/" + filename));
+            }
+        });
+
+    });
+
+});
+
+app.get("/", function (req, res) {
+
+    return investigations.findAll({
+        raw: true,
+        as: "investigations",
+        include: [{
+            as: "patient",
+            model: patients
+        }]
+    }).then(function (result) {
+        result.forEach(function (investigation) {
+            investigationItem = {};
+            investigationItem['Id'] = investigation.patient_id;
+            investigationItem['Date'] = moment(investigation.createdAt).format('DD-MM-YYYY');
+            investigationItem['Time'] = moment(investigation.createdAt).format('hh:mm');
+            investigationItem['Phone Number'] = investigation['patient.phone'];
+            investigationItem['First Name'] = investigation['patient.first_name'];
+            investigationItem['SurName'] = investigation['patient.sur_name'];
+            investigationItem['Dob'] = investigation['patient.date_of_birth'];
+            investigationItem['Date Of First Symptom'] = investigation['patient.start_date_of_symptoms'];
+            investigationItem['Initial Symptom'] = investigation.symptoms ? investigationItem['Initial Symptom'] = investigation.symptoms : investigationItem['Initial Symptom'] = investigation['patient.symptoms'];
+            investigationItem['Spo2'] = investigation.pulse_oximeter;
+            investigationItem['Temperature'] = investigation.temperature;
+            investigationItem['Number Of Breaths 60s'] = investigation.breaths;
+            investigationItem['Pulserate'] = investigation.pulse_rate;
+            investigationItem['Blood Pressure Systolic'] = investigation.blood_pressure_systolic;
+            investigationItem['Blood Pressure Diastolic'] = investigation.blood_pressure_diastolic;
+            investigationItem['Persistent Cough'] = investigation.persistent_cough;
+            investigationItem['Is It Dry'] = investigation.discoloured_phlegm ? investigation.discoloured_phlegm : 'n/a';
+            investigationItem['Color Of Speutum'] = investigation.discoloured_phlegm;
+            investigationItem['Are You On Oxygen'] = investigation.oxygen;
+            investigationItem['Is Your Urine Dark'] = investigation.urine;
+            investigationItem['Food In The House'] = investigation.food_status;
+            investigationItem['Have A carer'] = investigation.carer_status;
+            investigationItem['Status'] = investigation.patient_status;
+
+            investigationlist.push(investigationItem);
+            //console.log(investigationItem);
+
+        });
+
+
+        parser = new Parser(opts);
+        const csv = parser.parse(investigationlist);
+
+
+        filename = date.getFullYear() + date.getMonth() + date.getDay() + date.getTime() + '.csv';
+        console.log(investigationlist.length);
+        fs.writeFile('ups/' + filename, csv, function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.download(path.join(__dirname, "csvs/" + filename));
             }
         });
 
