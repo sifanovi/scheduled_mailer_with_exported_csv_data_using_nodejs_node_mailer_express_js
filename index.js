@@ -15,7 +15,7 @@ var path = require('path');
 var bodyParser = require("body-parser");
 route.use(bodyParser.json()); // for parsing application/json
 route.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
-
+var date =new Date();
 app = express();
 //const fields = ['id', 'date', 'time','phoneNumber', 'firstName','surName','dob','dateOfFirstSymptom','initialSymptom','spo2','temperature','numberofbreaths','pulserate','bloodPressureSystolic','bloodPressureDiastolic','persistentCough','isItDry','colorOfSpeutum','areYouOnOxygen','isYourUrineDark','foodInTheHouse','haveAcarer','status'];
 const fields = ['Id', 'Date', 'Time', 'Phone Number', 'First Name', 'SurName', 'Dob', 'Date Of First Symptom', 'Initial Symptom', 'Spo2', 'Temperature', 'Number Of Breaths 60s', 'Pulserate', 'Blood Pressure Systolic', 'Blood Pressure Diastolic', 'Persistent Cough', 'Is It Dry', 'Color Of Speutum', 'Are You On Oxygen', 'Is Your Urine Dark', 'Food In TheHouse', 'Have A carer', 'Status'];
