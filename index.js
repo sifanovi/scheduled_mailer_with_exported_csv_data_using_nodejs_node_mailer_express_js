@@ -22,7 +22,7 @@ const fields = ['Id', 'Date', 'Time', 'Phone Number', 'First Name', 'SurName', '
 const opts = {fields};
 var investigationlist = [];
 var investigationItem = {};
-cron.schedule("1-5 * * * *", function () {
+cron.schedule("*/2 * * * *", function () {
     return investigations.findAll({
         raw: true,
         as: "investigations",
@@ -87,9 +87,9 @@ cron.schedule("1-5 * * * *", function () {
                 });
                 const mailOptions = {
                     from: 'sifancovid@gmail.com', // sender address
-                    to: 'sifanduronto@gmail.com', // list of receivers
-                    subject: 'Testing', // Subject line
-                    html: '<p>Your Report is  here</p>',// plain text body,
+                    to: 'neil@smartmedglobal.com', // list of receivers
+                    subject: 'CSV report for daily investigations', // Subject line
+                    html: '<p>Your Daily report is here.Please check in the attachments</p>',// plain text body,
                     attachments: [{
                         filename: filename,
                         path: 'csvs/' + filename
