@@ -37,8 +37,8 @@ cron.schedule("00 08 * * *", function () {
         result.forEach(function (investigation) {
             investigationItem = {};
             investigationItem['Id'] = investigation.patient_id;
-            investigationItem['Date'] = moment(investigation.createdAt).format('DD-MM-YYYY');
-            investigationItem['Time'] = moment(investigation.createdAt).format('hh:mm');
+            investigationItem['Date'] = moment(investigation.createdAt).tz("Europe/London").format('DD-MM-YYYY');
+            investigationItem['Time'] = moment(investigation.createdAt).tz("Europe/London").format('hh:mm');
             investigationItem['Phone Number'] = investigation['patient.phone'];
             investigationItem['First Name'] = investigation['patient.first_name'];
             investigationItem['SurName'] = investigation['patient.sur_name'];
@@ -122,8 +122,8 @@ app.get("/", function (req, res) {
         result.forEach(function (investigation) {
             investigationItem = {};
             investigationItem['Id'] = investigation.patient_id;
-            investigationItem['Date'] = moment(investigation.createdAt).format('DD-MM-YYYY');
-            investigationItem['Time'] = moment(investigation.createdAt).format('hh:mm');
+            investigationItem['Date'] = moment(investigation.createdAt).tz("Europe/London").format('DD-MM-YYYY');
+            investigationItem['Time'] = moment(investigation.createdAt).tz("Europe/London").format('hh:mm');
             investigationItem['Phone Number'] = investigation['patient.phone'];
             investigationItem['First Name'] = investigation['patient.first_name'];
             investigationItem['SurName'] = investigation['patient.sur_name'];
